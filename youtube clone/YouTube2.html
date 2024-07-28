@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>YouTube clone</title>
+      <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+      <style>
+        body{
+          margin: 0;
+          padding-top: 80px;
+          padding-left: 96px;
+          padding-right: 24px;
+          background-color: rgb(248, 248, 248);
+        }
+        .header{
+          height: 55px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          background-color: white;
+          border-bottom-width: 1px;
+          border-bottom-style: solid;
+          border-bottom-color: rgba(228, 228, 228) ;
+          z-index: 100;
+        }
+        .left-section{
+          display: flex;
+          align-items: center;
+        }
+        .middle-section{
+          flex: 1;
+          margin-left: 70px;
+          margin-right: 35px;
+          max-width: 500px;
+          display: flex;
+          align-items: center;
+        }
+        .search-bar{
+          flex:1;
+          height: 34px;
+          font-size: 16px;
+          border-width: 1px;
+          border-style: solid;
+          border-color: rgb(192, 192, 192);
+          border-radius: 2px;
+          box-shadow: inset 1px 2px 3px rgba(0,0,0,0.05);
+          z-index: 200;
+          padding-top: 5px;
+        }
+        .search-bar::placeholder{
+          font-size: 16px;
+          padding-left: 12px;
+        }
+        .right-section{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-right: 20px;
+        }
+        .subdev1,.subdev2{
+         display: inline-block;
+         vertical-align: top;
+        }
+        .img1{
+         width: 100%;
+         height: 200px;
+         margin-bottom: 10px;
+        }
+        .img2{
+          width: 40px;
+          height: 40px;
+          border-radius:50px ;
+        } 
+        .text1{
+         font-weight: bold;
+         font-size: 18px;
+         margin-top: 0;
+        }
+        .dev3,.dev4,.dev5{
+          width: 300px;
+        }
+        .dev4,.dev5{
+         line-height: 10px;
+        }
+        .subdev2{
+          margin-left: 5px;
+        }
+        .dev2-grid{
+         display: grid;
+         grid-template-columns: 40px 1fr;
+        }
+        .video-grid{
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          column-gap: 18px;
+          row-gap: 30px;
+        }
+        .font-edit{
+          font-weight: bold;
+          font-size: 24px;
+        }
+        .img3{
+          width: 40px;
+          height: 40px;
+          border-radius: 50px;
+          margin-top: 5px;
+          margin-left: 34px;
+        }
+        .sidebar{
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          top:55px;
+          background-color: white;
+          width: 72px;
+        }
+        .video-time{
+          background-color: black;
+          color: white;
+          position: absolute;
+          bottom: 20px;
+          right: 5px;
+          font-size: 15px;
+          font-weight: 500;
+          padding-left: 3px;
+          padding-right: 3px;
+          padding-top: 4px;
+          padding-bottom: 4px;
+          border-radius: 2px;
+        }
+        .dev1{
+          position: relative;
+        }
+        .notification-icon-container{
+          position: relative;
+        }
+        .notification-count{
+          position: absolute;
+          top:0;
+          right:0;
+          background-color: rgb(184, 18, 18);
+          color: white;
+          font-size: 14px;
+          padding-left: 5px;
+          padding-right: 5px;
+          padding-top: 2px;
+          padding-bottom: 2px;
+          border-radius: 10px;
+          font-weight: 600;
+        }
+        .sidebar-link{
+          height: 76px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          cursor:pointer;
+        }
+        .sidebar-link:hover{
+          background-color: rgb(235, 235, 235);
+        }
+        .sidebar-link div{
+          font-size: 13px;
+        }
+        .search-button,
+        .microphone,
+        .upload-icon-container,
+        .apps-icon-container,
+        .notification-icon-container{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        }
+        .search-button .tooltip,
+        .microphone .tooltip,
+        .upload-icon-container .tooltip,
+        .apps-icon-container .tooltip,
+        .notification-icon-container .tooltip{
+          position: absolute;
+          background-color: rgb(80, 76, 76);
+          color: white;
+          padding-top: 3px;
+          padding-bottom: 6px;
+          padding-left: 8px;
+          padding-right: 8px;
+          border-radius: 2px;
+          font-size: 16px;
+          bottom: -30;
+          opacity: 0;
+          transition: opacity 0.15;
+          pointer-events: none;
+          white-space: nowrap;
+        }
+        .search-button:hover .tooltip,
+        .microphone:hover .tooltip,
+        .upload-icon-container:hover .tooltip,
+        .apps-icon-container:hover .tooltip,
+        .notification-icon-container:hover .tooltip{
+          opacity: 1;
+        } 
+        .upload-icon-container .tooltip{
+          margin-top: 54px;
+        }
+        .apps-icon-container .tooltip{
+          margin-top: 54px;
+        }
+        .notification-icon-container .tooltip{
+          margin-top:54px ;
+        }
+      </style>
+    </head>
+    <body>
+        <div class="header">
+          <div class="left-section">
+            <i class='bx bx-menu bx-md'></i>
+            <i class='bx bxl-youtube bx-lg' style="color: red; width: 50px; font-size: 60px; margin-left: 18px;"></i>
+            <p class="font-edit">YouTube</p>
+          </div>
+          <div class="middle-section">
+            <input class="search-bar" type="text" placeholder="search">
+            <button class="search-button"><i class='bx bx-search bx-sm' style="height: 28px;
+             margin-top: 4px;
+             background-color: rgb(240, 240, 240);
+             border-color:rgb(192, 192, 192) ;
+             margin-left: -1px;
+             ">
+              <div class="tooltip">Search</div>
+             </i>
+             </button>
+             <div class="microphone" style="position: relative;">
+               <i class='bx bxs-microphone bx-sm' style="height: 28px; 
+               margin-top: 4px;
+               background-color: rgb(240, 240, 240);
+               border-color:rgb(192, 192, 192) ; 
+               border-radius: 30px;
+               margin-left: 24px;
+               position: relative;
+               ">
+               <div class="tooltip">Search With Your Voice</div>
+               </i>
+             </div>
+            
+          </div>
+          <div class="right-section">
+            <div class="upload-icon-container">
+              <i class='bx bx-video-plus bx-md' style="margin-right: 34px;"></i>
+              <div class="tooltip">Create</div>
+            </div>
+            <div class="apps-icon-container">
+              <i class='bx bxs-grid bx-md' style="margin-right: 34px;" ></i>
+              <div class="tooltip">Apps Icons </div>
+            </div>
+            <div class="notification-icon-container">
+              <i class='bx bx-bell bx-md'></i>
+              <div class="notification-count">3</div>
+              <div class="tooltip">Notifications</div>
+            </div>
+            <img class="img3" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoaudiYjzTfgDNnhuPxh32Vng6D-JO9TYXOg&s">
+          </div>
+        </div>
+        <div class="sidebar">
+          <div class="sidebar-link">
+            <i class='bx bxs-home bx-sm'></i>
+            <div>Home</div>
+          </div>
+          <div class="sidebar-link">
+            <i class='bx bx-compass  bx-sm'></i>
+            <div>Explore</div>
+          </div>
+          <div class="sidebar-link">
+            <i class='bx bxs-collection  bx-sm'></i>
+            <div>Subscriptions</div>
+          </div>
+          <div class="sidebar-link">
+            <i class='bx bxs-videos  bx-sm'></i>
+            <div>Original</div>
+          </div>
+          <div class="sidebar-link">
+            <i class='bx bxs-music  bx-sm'></i>
+            <div>YouTube Music</div>
+          </div>
+          <div class="sidebar-link">
+            <i class='bx bx-library  bx-sm'></i>
+            <div>Library</div>
+          </div>
+        </div>
+        <div class="video-grid">
+         <div class="dev">
+            <div class="dev1">
+                <img class="img1" src="https://www.india.com/wp-content/uploads/2022/12/google-ceo-sundar-pichai.jpg">
+                <div class="video-time">14:20</div>
+            </div>
+            <div class="dev2-grid">
+               <div class="subdev1">
+                 <img class="img2" src="https://www.india.com/wp-content/uploads/2022/12/google-ceo-sundar-pichai.jpg">
+               </div>
+               <div class="subdev2">
+                 <div class="dev3">
+                    <p class="text1">
+                        Talking tech and AI with sundar pichai
+                     </p>
+                 </div>
+                 <div class="dev4">
+                   <p class="text2">
+                     Marques Browniee
+                   </p>
+                 </div>
+                 <div class="dev5">
+                    <p class="text3">
+                        3.4M views  &#183; 6 months ago
+                     </p>
+                 </div>  
+               </div>
+            </div>
+         </div>
+         <div class="dev">
+            <div class="dev1">
+                <img class="img1" src="https://i.ytimg.com/vi/F5tMDGRqUOk/maxresdefault.jpg">
+                <div class="video-time">8:22</div>
+            </div>
+            <div class="dev2-grid">
+               <div class="subdev1">
+                 <img class="img2" src="https://i.ytimg.com/vi/F5tMDGRqUOk/maxresdefault.jpg">
+               </div>
+               <div class="subdev2">
+                 <div class="dev3">
+                    <p class="text1">
+                        Try not to laugh!!
+                     </p>
+                 </div>
+                 <div class="dev4">
+                   <p class="text2">
+                    Markiplier
+                   </p>
+                 </div>
+                 <div class="dev5">
+                    <p class="text3">
+                        2.6M views  &#183; 2  years ago
+                     </p>
+                 </div>  
+               </div>
+            </div>
+         </div>
+         <div class="dev">
+            <div class="dev1">
+                <img class="img1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt7m1-XTZl3DTo2oCROmf0yKZcaKWo_u1Iag&s">
+                <div class="video-time">12:23</div>
+            </div>
+            <div class="dev2-grid">
+               <div class="subdev1">
+                 <img class="img2" src="https://www.india.com/wp-content/uploads/2022/12/google-ceo-sundar-pichai.jpg">
+               </div>
+               <div class="subdev2">
+                 <div class="dev3">
+                    <p class="text1">
+                      Crazy Tik Toks Taken Moments Before DISASTER
+                     </p>
+                 </div>
+                 <div class="dev4">
+                   <p class="text2">
+                     Tik Toks funs
+                   </p>
+                 </div>
+                 <div class="dev5">
+                    <p class="text3">
+                        2.4M views  &#183; 4 months ago
+                     </p>
+                 </div>  
+               </div>
+            </div>
+         </div>
+         <div class="dev">
+            <div class="dev1">
+                <img class="img1" src="https://i.ytimg.com/vi/86CQq3pKSUw/hqdefault.jpg?sqp=-oaymwEmCOADEOgC8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGFIgZSg5MA8=&rs=AOn4CLAs6frNXXyvumBUbgY2K_W7et4ssg">
+                <div class="video-time">10:12</div>
+            </div>
+            <div class="dev2-grid">
+               <div class="subdev1">
+                 <img class="img2" src="https://i.ytimg.com/vi/F5tMDGRqUOk/maxresdefault.jpg">
+               </div>
+               <div class="subdev2">
+                 <div class="dev3">
+                    <p class="text1">
+                      Kadane's Algorithm to Maximum Sum Subarray Problem
+                     </p>
+                 </div>
+                 <div class="dev4">
+                   <p class="text2">
+                     Fun With Maths
+                   </p>
+                 </div>
+                 <div class="dev5">
+                    <p class="text3">
+                        2.3M views  &#183;  1 years ago
+                     </p>
+                 </div>  
+               </div>
+            </div>
+         </div>
+         <div class="dev">
+            <div class="dev1">
+                <img class="img1" src="https://i.ytimg.com/vi/WW-T-vjaAEc/maxresdefault.jpg">
+                <div class="video-time">5:12</div>
+            </div>
+            <div class="dev2-grid">
+               <div class="subdev1">
+                 <img class="img2" src="https://www.india.com/wp-content/uploads/2022/12/google-ceo-sundar-pichai.jpg">
+               </div>
+               <div class="subdev2">
+                 <div class="dev3">
+                    <p class="text1">
+                        Why plains Don't fly over here??
+                     </p>
+                 </div>
+                 <div class="dev4">
+                   <p class="text2">
+                     Facts Library
+                   </p>
+                 </div>
+                 <div class="dev5">
+                    <p class="text3">
+                        3.4M views  &#183; 6 months ago
+                     </p>
+                 </div>  
+               </div>
+            </div>
+         </div>
+         <div class="dev">
+            <div class="dev1">
+                <img class="img1" src="https://5.imimg.com/data5/SELLER/Default/2021/2/MY/GE/ZX/63191598/tunnel-fish-aquarium-500x500.jpg">
+                <div class="video-time">14:22</div>
+            </div>
+            <div class="dev2-grid">
+               <div class="subdev1">
+                 <img class="img2" src="https://i.ytimg.com/vi/F5tMDGRqUOk/maxresdefault.jpg">
+               </div>
+               <div class="subdev2">
+                 <div class="dev3">
+                    <p class="text1">
+                        Under Water Aquarium
+                     </p>
+                 </div>
+                 <div class="dev4">
+                   <p class="text2">
+                    Water World
+                   </p>
+                 </div>
+                 <div class="dev5">
+                    <p class="text3">
+                        2.6M views  &#183; 4 years ago
+                     </p>
+                 </div>  
+               </div>
+            </div>
+        </div>
+    </body>
+</html>
